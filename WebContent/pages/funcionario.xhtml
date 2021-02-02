@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Funcinario</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+
+
+<h:body>
+	<p:growl id="mensagem" />
+	<h:form id="frmFuncionarioListagem">
+		<p:panel style="text-align: center" header="Funcionario - Listagem">
+			<p:dataTable id="tabelaListagem"
+				emptyMessage="Nenhum Registro encontrado"
+				value="#{MBFuncionario.funcionarios}" var="funcListagem"
+				paginator="true" rows="5">
+				<f:facet name="header">
+					<p:commandButton value="Novo" icon="ui-icon-disk"
+						oncomplete="PF('dialogoFuncionario').show();"
+						actionListener="#{MBFuncionario.novo()}"
+						update=":mensagem :frmCadastroFuncionario:pnlCadastroFuncionario" />
+					<p:commandButton value="Tela Setor" action="/pages/setor.xhtml" />
+				</f:facet>
+
+				<p:column headerText="ID">
+					<p:outputLabel value="#{funcListagem.id}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{funcListagem.nome}">
+					<p:outputLabel value="#{funcListagem.nome}" />
+				</p:column>
+
+				<p:column headerText="E-mail">
+					<p:outputLabel value="#{funcListagem.email}" />
+				</p:column>
+
+				<p:column headerText="Idade">
+					<p:outputLabel value="#{funcListagem.idade}" />
+				</p:column>
+
+				<p:column headerText="Salário">
+					<p:outputLabel value="#{funcListagem.salario}" />
+				</p:column>
+
+				<p:column headerText="Setor">
+					<p:outputLabel value="#{funcListagem.setor.nome}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:commandButton ajax="true" icon=" ui-icon-trash"
+						actionListener="#{MBFuncionario.excluir}"
+						update=":mensagem :frmFuncionarioListagem:tabelaListagem">
+						<p:confirm header="Confirmar"
+							message="Deseja excluir o funcionário? " icon="ui-icon-alert" />
+						<f:attribute name="funcionarioSelecionado" value="#{funcListagem}" />
+					</p:commandButton>
+
+					<!--  Botão Opção Editar -->
+
+					<p:commandButton ajax="true" icon=" ui-icon-pencil"
+						actionListener="#{MBFuncionario.editar}"
+						update=":mensagem :frmCadastroFuncionario:pnlCadastroFuncionario"
+						oncomplete="PF('dialogoFuncionario').show();">
+						<f:attribute name="funcionarioSelecionado" value="#{funcListagem}" />
+					</p:commandButton>
+				</p:column>
+
+
+
+			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Funcionario - Cadastro "
+		widgetVar="dialogoFuncionario" draggable="false" resizable="false"
+		modal="true" closable="false">
+
+
+		<h:form id="frmCadastroFuncionario">
+			<h:panelGrid id="pnlCadastroFuncionario">
+
+				<!-- Não é necessário salvar a id pois ela é auto-increment -->
+				
+				<!--                    <p:outputLabel value="ID" />
+                    <p:inputText value="#{MBFuncionario.funcionario.id}" />
+						-->
+				<p:outputLabel value="Nome" />
+				<p:inputText value="#{MBFuncionario.funcionario.nome}"
+					required="true" requiredMessage="O campo nome é obrigatório" /> 
+
+                    <p:outputLabel value="E-mail" />
+				<p:inputText value="#{MBFuncionario.funcionario.email}"
+					required="true" requiredMessage="O campo e-mail é obrigatório" /> 
+
+                    <p:outputLabel value="Idade" />
+				<p:inputText value="#{MBFuncionario.funcionario.idade}"
+					required="true" requiredMessage="O campo idade é obrigatório" /> 
+
+                    <p:outputLabel value="Salario" />
+				<p:inputText value="#{MBFuncionario.funcionario.salario}"
+					required="true" requiredMessage="O campo salário é obrigatório" /> 
+
+                    <p:outputLabel value="Setor" />
+				<p:selectOneMenu filter="true"
+					value="#{MBFuncionario.funcionario.setor}"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione um setor" />
+					<f:selectItems value="#{MBFuncionario.setores}" var="setor"
+						itemValue="#{setor}" itemLabel="#{setor.nome}" />
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton ajax="true" value="Salvar"
+					actionListener="#{MBFuncionario.salvar}"
+					update=":mensagem :frmCadastroFuncionario:pnlCadastroFuncionario :frmFuncionarioListagem:tabelaListagem ">
+				</p:commandButton>
+				<p:commandButton value="Fechar"
+					oncomplete="PF('dialogoFuncionario').hide();" />
+			</h:panelGrid>
+
+
+
+		</h:form>
+	</p:dialog>
+
+</h:body>
+</html>

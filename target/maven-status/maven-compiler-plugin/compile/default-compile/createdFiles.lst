@@ -1,0 +1,13 @@
+com\hepta\funcionarios\entity\Setor.class
+com\hepta\funcionarios\persistence\HibernateUtil.class
+com\hepta\funcionarios\Bean\SetorBean.class
+com\hepta\funcionarios\rest\FuncionarioService.class
+com\hepta\funcionarios\entity\Setor_.class
+com\hepta\funcionarios\util\JSFUtil.class
+com\hepta\funcionarios\entity\Funcionario_.class
+com\hepta\funcionarios\persistence\FuncionarioDAO.class
+com\hepta\funcionarios\persistence\SetorDAO.class
+com\hepta\funcionarios\test\SetorServiceTest.class
+com\hepta\funcionarios\entity\Funcionario.class
+com\hepta\funcionarios\rest\FuncionarioService$1.class
+com\hepta\funcionarios\test\FuncionarioServiceTest.class

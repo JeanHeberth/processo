@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="estilo.css" />
+        <title>Setor</title>
+    </h:head>
+
+
+
+    <h:body>
+        <p:growl id="mensagem" />
+        <h:form id="frmListagemGeral">
+            <p:panel style="text-align: center;" header="Setor - Listagem">
+                <p:dataTable id="tblListagemGeral"
+                             emptyMessage="Nenhum registro encontrado." paginator="true"
+                             value="#{MBSetor.setores}" var="setorListagem" rows="5" rowKey="id">
+
+                    	<f:facet name="header"> 
+                    <p:commandButton class="btnNovo" icon="ui-icon-disk" value="Novo"
+                                     oncomplete="PF('dialogoSetor').show();"
+                                     actionListener="#{MBSetor.novo}" update=":frmCadastro:pnlCadastro" />
+                    <p:commandButton value="Tela Funcionario" action="/pages/funcionario.xhtml"/>
+                    </f:facet>
+                    <p:column headerText="ID" sortBy="#{setorListagem.id}"
+                              filterBy="#{setorListagem.id}">
+                        <h:outputText value="#{setorListagem.id}" />
+                    </p:column>
+
+                    <p:column headerText="Setor" sortBy="#{setorListagem.nome}"
+                              filterBy="#{setorListagem.nome}">
+                        <h:outputText value="#{setorListagem.nome}"/>
+                    </p:column>
+
+
+                    <!--  Botão Opção Excluir -->
+
+                    <p:column headerText="Opções">
+                        <p:commandButton ajax="true" icon=" ui-icon-trash"
+                                         actionListener="#{MBSetor.excluir}"
+                                         update=":mensagem :frmListagemGeral:tblListagemGeral">
+                            <p:confirm header="Confirmar" message="Deseja excluir o setor? "
+                                       icon="ui-icon-alert" />
+                            <f:attribute name="setorSelecionado" value="#{setorListagem}" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Sim" type="button"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Não" type="button"
+                                             styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+
+
+
+                        <!--  Botão Opção Editar -->
+
+                        <p:commandButton ajax="true" icon=" ui-icon-pencil"
+                                         actionListener="#{MBSetor.editar}"
+                                         update=":frmCadastro:pnlCadastro"
+                                         oncomplete="PF('dialogoSetor').show();">
+                            <f:attribute name="setorSelecionado" value="#{setorListagem}" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+
+
+            </p:panel>
+        </h:form>
+
+
+        <p:dialog header="Setor - Cadastro " widgetVar="dialogoSetor"
+                  draggable="false" resizable="false" modal="true" closable="false">
+
+            <h:form id="frmCadastro">
+                <h:panelGrid id="pnlCadastro">
+                    <p:outputLabel value="Nome do setor " />
+                    <p:inputText size="30" maxlength="50" value="#{MBSetor.setor.nome}" required="true" 
+                    	requiredMessage="O campo nome é obrigatório"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:commandButton ajax="true" value="Salvar"
+                                     actionListener="#{MBSetor.salvar}"
+                                     update=":mensagem :frmCadastro:pnlCadastro :frmListagemGeral:tblListagemGeral">
+                    </p:commandButton>
+                    <p:commandButton value="Fechar"
+                                     oncomplete="PF('dialogoSetor').hide();" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </h:body>
+</html>
